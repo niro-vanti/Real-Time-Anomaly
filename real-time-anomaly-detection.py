@@ -1,7 +1,6 @@
 import streamlit as st
 import os
 import pandas as pd
-import altair as alt
 import time
 import plotly.express as px
 import numpy as np
@@ -44,7 +43,7 @@ def highlight_survived(s):
 
 
 st.set_page_config(page_title=page_title, page_icon=page_icon)  # , layout=layout)
-color_scale = alt.Scale(range=['#FAFA37', '#52de97', '#c9c9c9'])
+# color_scale = alt.Scale(range=['#FAFA37', '#52de97', '#c9c9c9'])
 
 df = pd.read_csv('assets/data/anomaly.csv', index_col=0)
 df['sen_alert'] = 0
@@ -56,19 +55,43 @@ with st.sidebar:
     if connect:
         for i in range(10000000):
             a = 1
-        st.success('connected to model')
-    mode = st.radio('select alert mode',
+        st.success('connected to to model')
+    with st.expander('Product Tree'):
+        for col in df.columns:
+            qwer = str(col)
+            s1 = st.button(qwer)
+    st.text(' ')
+    batch = st.file_uploader("upload batch file")
+
+st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
+st.title(page_title)
+st.text(' ')
+
+# st.image('assets/Images/car-pano-1.jpg')
+
+
+clist = ['All Sensors']
+
+for i in df.columns.to_list():
+    clist.append(i)
+feats = st.multiselect("Select Sensors", clist)
+
+st.text("You selected: {}".format(", ".join(feats)))
+if 'All Sensors' in feats:
+    feats = df.columns.to_list()
+
+c1, c2 = st.columns(2)
+mode = c1.radio('select alert mode',
                     ['alert me only when there''s a situation anomaly',
                      'alert me only when there''s a sensor anomaly',
                      'I want all alerts'])
+with c2.expander('what are these alerts?'):
+    st.write('a **sensor** anomaly is when a single sensor is tracked by Vanti''s model and the model decides to '
+             'alert the user')
+    st.write('a **situation** anomaly is when all sensors are tracked together by Vanti''s model and the the model '
+             'decides to alert the user')
 
-    sensitivity = st.slider('alert sensitivy', 0.0, 100.0, 50.0)
-
-    batch = st.file_uploader("upload batch file")
-
-st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=100)
-st.title(page_title)
-st.text(' ')
+a = 1
 
 if mode == 'alert me only when there''s a situation anomaly':
     MODE = 0
@@ -78,14 +101,12 @@ elif mode == 'I want all alerts':
     MODE = 2
 print(MODE)
 
-clist = ['All Sensors']
-for i in df.columns.to_list():
-    clist.append(i)
-feats = st.multiselect("Select Sensors", clist)
 
-st.text("You selected: {}".format(", ".join(feats)))
-if 'All Sensors' in feats:
-    feats = df.columns.to_list()
+
+sensitivity = c1.slider('alert sensitivity', 0.0, 100.0, 50.0)
+with c2.expander("what is model sensitivity?"):
+    st.write("_sensitivity 100 --> alert me on **everything**_")
+    st.write("_sensitivity 0 --> alert me on **critical things only**_")
 
 ms = {i: df[i].mean() for i in feats}
 ss = {i: df[i].std() for i in feats}
@@ -102,6 +123,8 @@ window = 300
 pl = st.empty()
 pl2 = st.empty()
 alerts = pd.DataFrame()
+
+# tab1, tab2 = st.tabs(['alert table','alert graph'])
 
 if stream:
     stop_stream = c2.button('Stop Injection')

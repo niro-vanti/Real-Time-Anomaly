@@ -5,9 +5,3 @@ pandas==1.1.0
 #altair==4.1.0
 #scikit-learn~=0.23.2
 plotly~=5.3.1
-#future~=0.18.2
-#customtkinter~=4.0.2
-#torch~=1.10.2
-#diffusers~=0.2.2
-#deta~=1.1.0
-#python-dotenv~=0.20.0

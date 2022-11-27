@@ -56,7 +56,7 @@ with st.sidebar:
     if connect:
         for i in range(10000000):
             a = 1
-        st.success('connected to to model')
+        st.success('connected to model')
     mode = st.radio('select alert mode',
                     ['alert me only when there''s a situation anomaly',
                      'alert me only when there''s a sensor anomaly',

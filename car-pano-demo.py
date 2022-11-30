@@ -49,14 +49,14 @@ with st.sidebar:
 st.image('assets/Images/Vanti - Main Logo@4x copy.png', width=200)
 st.title(page_title)
 st.text(' ')
-st.image('assets/Images/car-pano-1.jpg')
+st.image('assets/Images/panorama-car-removebg.png')
 
 c1, c2 = st.columns(2)
 # stream = c1.button('Start Injection mode')
 
 pl = st.empty()
 p2 = st.empty()
-N = 563
+N = 431
 cls = ''
 is_error = False
 

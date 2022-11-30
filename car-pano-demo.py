@@ -84,7 +84,7 @@ if stream:
                 is_error = False
             else:
                 st.error('found a defect - '+defect)
-                image = Image.open('assets/Images/' + str(i % N) + '_zoom_' + defect + '.jpeg')
+                image = Image.open('assets/Images/' + str(i % N) + '_zoom_' + defect + '.png')
                 data = np.asarray(image)
                 err_fig = px.imshow(data).update_xaxes(showticklabels=False).update_yaxes(showticklabels=False)
                 # cls = get_class()
